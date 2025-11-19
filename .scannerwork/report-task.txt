@@ -1,0 +1,7 @@
+organization=sparktool
+projectKey=sparktool_module-doc-lib
+serverUrl=https://sonarcloud.io
+serverVersion=8.0.0.76685
+dashboardUrl=https://sonarcloud.io/dashboard?id=sparktool_module-doc-lib&branch=main
+ceTaskId=AZqdwjFsUJKGg1rdQ7Zm
+ceTaskUrl=https://sonarcloud.io/api/ce/task?id=AZqdwjFsUJKGg1rdQ7Zm
