@@ -1,6 +1,6 @@
 {
   "name": "module-doc-lib",
-  "version": "1.14.0",
+  "version": "1.15.0",
   "description": "Biblioteca de geração de código",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
