@@ -36,6 +36,9 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
+      - name: Limpar diretório de trabalho com Git
+        run: git clean -fdx
+
       - name: Criar Release Pull Request ou Publicar no NPM
         uses: changesets/action@v1
         with:
