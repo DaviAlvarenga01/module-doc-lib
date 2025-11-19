@@ -36,14 +36,21 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Limpar diretório de trabalho com Git
-        run: git clean -fdx
+      - name: Limpeza e Novo Checkout para o Release
+        # Re-checkout limpa o diretório de trabalho, mas pode ser lento.
+        uses: actions/checkout@v4
+        with:
+          path: clean_repo # Faz o checkout em uma pasta diferente/limpa
+          fetch-depth: 0
 
       - name: Criar Release Pull Request ou Publicar no NPM
+        # Adicione 'working-directory' para apontar para o novo local
         uses: changesets/action@v1
         with:
           version: npm run version-packages 
           publish: npm publish
+          # ATENÇÃO: Se usar o 'clean_repo' acima, você precisa adicionar isso:
+          # working-directory: clean_repo 
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
