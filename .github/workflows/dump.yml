@@ -1,81 +1,51 @@
-name: Bump Version and Publish
+name: Release
 
 on:
   push:
     branches:
       - main
-    paths-ignore:
-      - 'package.json'
-      - 'package-lock.json'
-      - 'npm-shrinkwrap.json'
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  publish: 
+  build-and-release:
     runs-on: ubuntu-latest
-    
     permissions:
-      contents: write 
-      
+      contents: write
+      pull-requests: write # Necessário para o Changesets criar o PR de versão
+      id-token: write      # Necessário para autenticação
+
     steps:
-      - name: Checkout código
-        uses: actions/checkout@v4 
-        with:
-          fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4 
+        uses: actions/setup-node@v4
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Configurar Git
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-      - name: Instalar dependências
+      - name: Instalar Dependências
         run: npm ci
 
-      - name: Build do projeto
+      - name: Build
         run: npx tsc
-        
-      - name: Análise com SonarCloud
+
+      - name: Análise com SonarCloud (Opcional - Mantive do seu anterior)
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        
-      - name: Bump de versão (minor)
-        id: package_version
-        run: |
-          VERSION=$(npm version minor --no-git-tag-version | tr -d 'v')
-          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
-          
-      - name: Publicar no NPM
-        run: npm publish
+
+      # 🌟 A MÁGICA ACONTECE AQUI
+      - name: Criar Release Pull Request ou Publicar no NPM
+        uses: changesets/action@v1
+        with:
+          # Este comando roda quando há mudanças acumuladas. Ele cria um PR chamado "Version Packages"
+          version: npm run version-packages 
+          # Este comando roda quando o PR de versão é mergeado na main
+          publish: npm publish
         env:
+          # Token do GitHub para criar o PR e tags
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Token do NPM para publicar o pacote
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-      - name: Commit, Tag e Push versão para o GitHub
-        run: |
-          git add package.json
-          git commit -m "ci: release ${{ steps.package_version.outputs.version }} [skip ci]"
-          git tag "v${{ steps.package_version.outputs.version }}"
-          git push origin main --follow-tags
-        
-      - name: Apagar tags antigas
-        run: |
-          latest_tag=$(git describe --tags --abbrev=0)
-          
-          echo "Mantendo a tag mais recente: $latest_tag"
-
-          for tag in $(git tag); do
-            if [ "$tag" != "$latest_tag" ]; then
-              git push --delete origin "$tag"
-              git tag -d "$tag"
-              echo "Tag apagada: $tag"
-            fi
-          done
-
-      - name: Definir timestamp (Opcional)
-        id: date
-        run: echo "timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$GITHUB_OUTPUT"
