@@ -1,23 +1,36 @@
 name: Bump Version and Publish
 
 on:
+  # O workflow será disparado ao fazer push na branch principal
   push:
     branches:
       - main
+    # 🚨 IMPORTANTE: Adicionado o filtro de "paths-ignore" para evitar loops infinitos!
+    # Se o workflow fizer um push, ele não deve re-disparar a si mesmo.
+    paths-ignore:
+      - 'package.json'
+      - 'package-lock.json'
+      - 'npm-shrinkwrap.json'
 
 jobs:
-  build:
+  publish: # Renomeado de 'build' para 'publish' para refletir a ação principal
     runs-on: ubuntu-latest
-
+    
+    # 🌟 CORREÇÃO ESSENCIAL: Adicionar permissão de escrita para o GITHUB_TOKEN
+    # Isso permite que o bot faça 'git push' com as tags criadas.
+    permissions:
+      contents: write # Permite push para o repositório e criação de tags/releases
+      
     steps:
       - name: Checkout código
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4 # Atualizado para a versão mais recente
         with:
+          # Necessário para obter histórico completo e tags
           fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # Não precisa especificar o 'token', pois o GITHUB_TOKEN é usado por padrão e tem a permissão 'contents: write' acima.
 
       - name: Setup Node.js
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4 # Atualizado para a versão mais recente
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
@@ -28,40 +41,47 @@ jobs:
           git config --local user.name "github-actions[bot]"
 
       - name: Instalar dependências
-        run: |
-          npm ci
+        run: npm ci
 
       - name: Build do projeto
         run: npx tsc
-
+        
+      # ⚠️ Recomenda-se mover a Análise SonarCloud para depois do 'Build' e antes do 'Bump'
       - name: Análise com SonarCloud
         uses: SonarSource/sonarcloud-github-action@v2
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-       
-      - name: Bump de versão (minor)
+        
+      - name: Bump de versão (minor) e Criação de Tag
         id: package_version
         run: |
-          VERSION=$(npm version minor -m "ci: release %s [skip ci]") # Removido o '|' extra e indentado corretamente
-          echo "version=$VERSION" >> $GITHUB_OUTPUT    
+          # O comando 'npm version' automaticamente cria e checa o commit e a tag.
+          # A sintaxe 'VERSION=$(...) && echo ...' é mais robusta.
+          VERSION=$(npm version minor -m "ci: release %s [skip ci]")
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          
+          # NOTA: O comando 'npm version' já faz o 'git commit' e 'git tag'.
+          # Ele não precisa ser executado duas vezes.
 
       - name: Publicar no NPM
         run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      - name: Push tag e versionamento para o GitHub
-        run: |
-          git push origin main --follow-tags
-
+      - name: Push versão (main branch) e tags para o GitHub
+        # ⚠️ ESTE PASSO ERA O QUE ESTAVA FALHANDO SEM PERMISSÃO!
+        run: git push origin main --follow-tags
+        # Não precisa do token aqui, pois a permissão 'contents: write' foi dada ao job.
+        
       - name: Apagar tags antigas
         run: |
           # Obtém a tag mais recente (a última criada)
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-
+          latest_tag=$(git describe --tags --abbrev=0) # Usando --abbrev=0 para obter a tag limpa
+          
           echo "Mantendo a tag mais recente: $latest_tag"
 
-          # Lista todas as tags, exclui a mais recente e deleta as demais
+          # Lista todas as tags e deleta as que não são a mais recente
+          # Nota: O uso de `git push --delete` requer a permissão de escrita, já concedida.
           for tag in $(git tag); do
             if [ "$tag" != "$latest_tag" ]; then
               git push --delete origin "$tag"
@@ -70,12 +90,6 @@ jobs:
             fi
           done
 
-      - name: Definir timestamp
+      - name: Definir timestamp (Opcional)
         id: date
         run: echo "timestamp=$(date -u '+%Y-%m-%d %H:%M:%S UTC')" >> "$GITHUB_OUTPUT"
-
-
-     
-     
-              
-
