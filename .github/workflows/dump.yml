@@ -36,9 +36,6 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-      - name: Clean Sonar temp folder
-        run: rm -rf .scannerwork
-
       - name: Criar Release Pull Request ou Publicar no NPM
         uses: changesets/action@v1
         with:
