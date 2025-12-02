@@ -10,7 +10,7 @@
  * @version 1.0.0
  */
 
-import type SEON from 'seon-lib-implementation';
+import SEON from 'seon-lib-implementation';
 
 /**
  * Entity class type from SEON library
