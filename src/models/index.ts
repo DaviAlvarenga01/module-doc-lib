@@ -1,10 +1,11 @@
 /**
- * Models Module Index
+ * index.ts (models)
  * 
- * Exports all model classes used in the library.
- * Models represent the data layer in the MVC architecture.
+ * Índice de exportação de todas as classes de modelo.
+ * Models representam a camada de dados na arquitetura MVC.
  * 
- * @module models
+ * Processos:
+ * - Exporta ModuleGenerator como classe principal do modelo
  */
 
 export { ModuleGenerator } from './ModuleGenerator.js';

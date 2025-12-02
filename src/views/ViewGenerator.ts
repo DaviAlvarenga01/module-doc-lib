@@ -1,13 +1,16 @@
 /**
- * View Generator
+ * ViewGenerator.ts
  * 
- * Generates Vue 3 component files (.vue) for each entity module.
- * Creates list view (Listar.vue) and create/edit view (Criar.vue).
+ * Gera arquivos de componentes Vue 3 (.vue) para cada módulo de entidade.
+ * Cria view de listagem (Listar.vue) e view de criação/edição (Criar.vue).
+ * Representa a camada View (gerador) na arquitetura MVC.
  * 
- * Based on the original implementation from leds-tools-spark-lib.
- * 
- * @module views/ViewGenerator
- * @version 1.0.0
+ * Processos:
+ * - Recebe ProjectAbstraction, ClassAbstraction e pasta de saída
+ * - Gera Listar.vue: tabela com dados, ações CRUD, seleção em lote
+ * - Gera Criar.vue: formulário dinâmico, detecção de modo de edição
+ * - Configura Composition API (script setup)
+ * - Aplica estilos scoped
  */
 
 import path from 'path';

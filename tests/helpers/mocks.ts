@@ -1,12 +1,13 @@
 /**
- * Mock Data Helper
+ * mocks.ts
  * 
- * Creates SEON abstractions using REAL classes from seon-lib-implementation.
- * Uses the same entities as leds-tools-spark-lib for consistency:
- * - Entidade1: nome (string), numero (integer)
- * - Entidade2: nome (string), verificacao (boolean)
+ * Cria abstrações SEON usando classes REAIS da seon-lib-implementation.
+ * Usa as mesmas entidades da leds-tools-spark-lib para consistência.
  * 
- * @module tests/helpers/mocks
+ * Processos:
+ * - createTestProject: cria projeto com Entidade1 (nome, numero) e Entidade2 (nome, verificacao)
+ * - createEmptyProject: cria projeto vazio para teste de edge cases
+ * - Usa ProjectAbstraction, PackageAbstraction, ClassAbstraction reais
  */
 
 import { 

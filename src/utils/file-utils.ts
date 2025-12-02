@@ -1,11 +1,14 @@
 /**
- * File System Utilities
+ * file-utils.ts
  * 
- * Provides utilities for file and directory operations used during code generation.
- * Based on the original implementation from leds-tools-spark-lib.
+ * Utilitários para operações de sistema de arquivos durante geração de código.
+ * Fornece funções para criar diretórios, escrever arquivos e manipular paths.
  * 
- * @module utils/file-utils
- * @version 1.0.0
+ * Processos:
+ * - createPath: cria diretórios recursivamente (equivalente a mkdir -p)
+ * - writeFile: escreve conteúdo em arquivo, criando diretórios automáticos
+ * - pathExists: verifica existência de caminho
+ * - capitalizeString: capitaliza primeira letra de string
  */
 
 import path from 'path';

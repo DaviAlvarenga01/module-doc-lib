@@ -1,11 +1,14 @@
 /**
- * Template String Utilities
+ * template-string.ts
  * 
- * Provides utilities for creating multi-line template strings with automatic
- * indentation alignment. Based on the original implementation from leds-tools-spark-lib.
+ * Utilitários para criar template strings multi-linha com alinhamento
+ * automático de indentação. Essencial para geração de código bem formatado.
  * 
- * @module utils/template-string
- * @version 1.0.0
+ * Processos:
+ * - Remove linhas vazias no início e fim
+ * - Calcula indentação mínima de linhas não vazias
+ * - Remove indentação comum de todas as linhas
+ * - Usa EOL específico da plataforma para compatibilidade
  */
 
 import { EOL } from 'os';

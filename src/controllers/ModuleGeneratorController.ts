@@ -1,20 +1,16 @@
 /**
- * Module Generator Controller
+ * ModuleGeneratorController.ts
  * 
- * Main controller responsible for orchestrating the entire module generation process.
- * This is the Controller layer in the MVC architecture.
+ * Orquestra o processo completo de geração de módulos.
+ * Representa a camada Controller na arquitetura MVC.
+ * Coordena entre Model (ModuleGenerator) e Views (geradores).
  * 
- * Responsibilities:
- * - Coordinate between Models and Views (generators)
- * - Validate inputs
- * - Manage the generation workflow
- * - Handle errors gracefully
- * 
- * Following KISS principle - simple coordination logic.
- * Follows ISO/IEC 25010 - maintainability and modularity.
- * 
- * @module controllers/ModuleGeneratorController
- * @version 1.0.0
+ * Processos:
+ * - Recebe ProjectAbstraction e diretório de saída
+ * - Cria instância do ModuleGenerator (Model)
+ * - Gera index principal com agregação de rotas
+ * - Para cada entidade, gera módulo completo (API, Controllers, Routes, Types, Views)
+ * - Exibe logs de progresso durante geração
  */
 
 import path from 'path';

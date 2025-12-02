@@ -1,15 +1,15 @@
 /**
- * Module Generator Model
+ * ModuleGenerator.ts
  * 
- * Main model class responsible for orchestrating module generation.
- * This class encapsulates the SEON ProjectAbstraction and provides
- * methods to extract entities and generate modules.
+ * Modelo que encapsula ProjectAbstraction do SEON e fornece métodos
+ * para extração de entidades e metadados necessários para geração.
+ * Representa a camada Model na arquitetura MVC.
  * 
- * Following MVC pattern - this is the Model layer.
- * Follows KISS principle - simple and focused responsibilities.
- * 
- * @module models/ModuleGenerator
- * @version 1.0.0
+ * Processos:
+ * - Valida ProjectAbstraction no construtor
+ * - Extrai todas as entidades de todos os packages
+ * - Fornece getters para informações do projeto
+ * - Verifica existência e conta entidades
  */
 
 import { ProjectAbstraction, ClassAbstraction } from '../types/index.js';

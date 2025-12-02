@@ -1,9 +1,12 @@
 /**
- * Cleanup Helper
+ * cleanup.ts
  * 
- * Utilities for cleaning up test artifacts.
+ * Utilitários para limpeza de artefatos de teste.
+ * Remove diretórios e arquivos gerados durante testes.
  * 
- * @module tests/helpers/cleanup
+ * Processos:
+ * - deleteFolderRecursive: deleta pasta e todo seu conteúdo recursivamente
+ * - Usa fs.rmSync com recursive e force para garantir limpeza completa
  */
 
 import fs from 'fs';

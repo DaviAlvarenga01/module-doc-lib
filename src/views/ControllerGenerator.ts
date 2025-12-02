@@ -1,13 +1,16 @@
 /**
- * Controller Generator
+ * ControllerGenerator.ts
  * 
- * Generates controller files that handle business logic and error handling.
- * Controllers wrap API calls with user interface feedback and error management.
+ * Gera arquivos de controller que gerenciam lógica de negócio e tratamento de erros.
+ * Controllers envolvem chamadas à API com feedback de interface e gerenciamento de erros.
+ * Representa a camada View (gerador) na arquitetura MVC.
  * 
- * Based on the original implementation from leds-tools-spark-lib.
- * 
- * @module views/ControllerGenerator
- * @version 1.0.0
+ * Processos:
+ * - Recebe ProjectAbstraction, ClassAbstraction e pasta de saída
+ * - Gera funções que envolvem chamadas à API
+ * - Implementa tratamento de erros com Axios
+ * - Exibe feedback de UI usando useUiStore
+ * - Gerencia estados de sucesso/erro
  */
 
 import path from 'path';

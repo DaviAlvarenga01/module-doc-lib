@@ -1,13 +1,15 @@
 /**
- * Type Generator
+ * TypeGenerator.ts
  * 
- * Generates TypeScript type definition files (.d.ts) for each entity module.
- * Creates interface definitions for entity data and form structures.
+ * Gera arquivos de definição de tipos TypeScript (.d.ts) para cada módulo de entidade.
+ * Cria definições de interface para dados da entidade e estruturas de formulário.
+ * Representa a camada View (gerador) na arquitetura MVC.
  * 
- * Based on the original implementation from leds-tools-spark-lib.
- * 
- * @module views/TypeGenerator
- * @version 1.0.0
+ * Processos:
+ * - Recebe ProjectAbstraction, ClassAbstraction e pasta de saída
+ * - Mapeia tipos SEON/Java para TypeScript (String->string, Integer->number, etc)
+ * - Gera interface para dados da entidade
+ * - Gera interface para formulário (mesma estrutura)
  */
 
 import path from 'path';

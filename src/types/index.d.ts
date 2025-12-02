@@ -1,13 +1,12 @@
 /**
- * Type Definitions for Module Generator Library
+ * index.d.ts
  * 
- * This file contains all TypeScript type definitions used throughout the library.
- * Following ISO/IEC 25010 for type safety and maintainability.
+ * Definições de tipos para abstrações da biblioteca SEON.
+ * Facilita importação de ProjectAbstraction e ClassAbstraction.
  * 
- * Maintains compatibility with the original leds-tools-spark-lib implementation.
- * 
- * @module types
- * @version 1.0.0
+ * Processos:
+ * - Importa tipos da biblioteca seon-lib-implementation
+ * - Re-exporta como type aliases para uso interno
  */
 
 import SEON from 'seon-lib-implementation';

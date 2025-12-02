@@ -1,9 +1,13 @@
 /**
- * File System Validation Helpers
+ * checkers.ts
  * 
- * Utilities for checking directory and file existence and content.
+ * Utilitários para validação de existência de diretórios, arquivos e conteúdo.
+ * Usado nos testes para verificar se geração ocorreu corretamente.
  * 
- * @module tests/helpers/checkers
+ * Processos:
+ * - checkIsDir: verifica se caminho é diretório existente
+ * - checkIsFile: verifica se caminho é arquivo existente
+ * - checkFileContains: verifica se arquivo contém string específica
  */
 
 import fs from 'fs';

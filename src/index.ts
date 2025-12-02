@@ -1,11 +1,13 @@
 /**
- * Module Doc Lib - Public API
+ * index.ts
  * 
- * Main entry point for the module-doc-lib library.
- * Exports the primary generation function and related types.
+ * Ponto de entrada principal da biblioteca module-doc-lib.
+ * Exporta a função de geração, modelo e tipos para uso externo.
  * 
- * @module index
- * @version 1.17.0
+ * Processos:
+ * - Exporta função generate() do controller
+ * - Exporta classe ModuleGenerator do model
+ * - Exporta tipos do SEON para conveniência
  */
 
 /**

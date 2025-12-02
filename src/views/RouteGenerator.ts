@@ -1,13 +1,15 @@
 /**
- * Route Generator
+ * RouteGenerator.ts
  * 
- * Generates Vue Router configuration files for each entity module.
- * Creates route definitions for list and create/edit views.
+ * Gera arquivos de configuração do Vue Router para cada módulo de entidade.
+ * Cria definições de rotas para views de listagem e criação/edição.
+ * Representa a camada View (gerador) na arquitetura MVC.
  * 
- * Based on the original implementation from leds-tools-spark-lib.
- * 
- * @module views/RouteGenerator
- * @version 1.0.0
+ * Processos:
+ * - Recebe ProjectAbstraction, ClassAbstraction e pasta de saída
+ * - Gera arquivo index.ts com RouteRecordRaw[]
+ * - Define rota para listagem ({entity}-home)
+ * - Define rota para criar/editar ({entity}-criar) com parâmetro id opcional
  */
 
 import path from 'path';

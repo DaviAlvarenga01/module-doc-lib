@@ -1,11 +1,12 @@
 /**
- * Views Module
+ * index.ts (views)
  * 
- * Barrel export for all code generators.
- * Each generator is responsible for creating specific parts of the module structure.
+ * Índice de exportação de todos os geradores de código.
+ * Cada gerador é responsável por criar partes específicas da estrutura do módulo.
  * 
- * @module views
- * @version 1.0.0
+ * Processos:
+ * - Exporta ApiGenerator, ControllerGenerator, RouteGenerator
+ * - Exporta TypeGenerator, ViewGenerator
  */
 
 export * as ApiGenerator from './ApiGenerator.js';

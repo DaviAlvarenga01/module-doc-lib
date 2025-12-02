@@ -1,13 +1,15 @@
 /**
- * API Generator
+ * ApiGenerator.ts
  * 
- * Generates API integration files for each entity.
- * Creates Axios-based HTTP client functions for CRUD operations.
+ * Gera arquivos de integração com API para cada entidade.
+ * Cria funções baseadas em Axios para operações CRUD.
+ * Representa a camada View (gerador) na arquitetura MVC.
  * 
- * Based on the original implementation from leds-tools-spark-lib.
- * 
- * @module views/ApiGenerator
- * @version 1.0.0
+ * Processos:
+ * - Recebe ProjectAbstraction, ClassAbstraction e pasta de saída
+ * - Gera arquivo TypeScript com funções CRUD (listar, criar, obter, atualizar, excluir)
+ * - Configura baseURL para integração com admin API
+ * - Define interfaces de requisição/resposta tipadas
  */
 
 import path from 'path';
