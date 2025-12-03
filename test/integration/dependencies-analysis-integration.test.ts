@@ -7,7 +7,7 @@
 import { describe, it, expect } from 'vitest';
 import { ModelController } from '../../src/controllers/ModelController';
 import { ValidationController } from '../../src/controllers/ValidationController';
-import { ModuleModel } from '../../src/models/ModuleModel';
+import type { LocalEntity } from '../../src/types';
 
 describe('Integration: Dependencies Analysis', () => {
   
@@ -50,15 +50,43 @@ describe('Integration: Dependencies Analysis', () => {
     const mod1 = model.addModule({ name: 'Core' });
     const mod2 = model.addModule({ name: 'Utils' });
     
-    const mod1Model = new ModuleModel(mod1);
-    mod1Model.addEntity({ name: 'Entity1' });
-    const mod2Model = new ModuleModel(mod2);
-    mod2Model.addEntity({ name: 'Entity2' });
-    
-    // Debug: verificar se entidades foram adicionadas
-    console.log('mod1.elements:', mod1.elements.length);
-    console.log('mod2.elements:', mod2.elements.length);
-    console.log('Total entities:', model.getAllEntities().length);
+    const entity1: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod1,
+      name: 'Entity1',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod1.elements.push(entity1);
+
+    const entity2: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod2,
+      name: 'Entity2',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod2.elements.push(entity2);
     
     const deps = ModelController.analyzeDependencies(model);
     const stats = ModelController.getStatistics(model);
@@ -66,6 +94,6 @@ describe('Integration: Dependencies Analysis', () => {
     expect(deps).toBeDefined();
     expect(stats).toBeDefined();
     expect(stats.totalModules).toBe(2);
-    expect(stats.totalEntities).toBeGreaterThanOrEqual(0); // Relaxar temporariamente
+    expect(stats.totalEntities).toBeGreaterThanOrEqual(2);
   });
 });

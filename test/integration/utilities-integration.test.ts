@@ -6,9 +6,9 @@
 
 import { describe, it, expect } from 'vitest';
 import { ModelController } from '../../src/controllers/ModelController';
-import { ModuleModel } from '../../src/models/ModuleModel';
 import { isModule, isLocalEntity } from '../../src/utils/TypeGuards';
 import { toPascalCase, toCamelCase } from '../../src/utils/StringUtils';
+import type { LocalEntity } from '../../src/types';
 
 describe('Integration: Utilities', () => {
   
@@ -19,8 +19,25 @@ describe('Integration: Utilities', () => {
     });
     
     const mod = model.addModule({ name: 'Core' });
-    const modModel = new ModuleModel(mod);
-    modModel.addEntity({ name: 'User' });
+    
+    const entity: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod,
+      name: 'User',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod.elements.push(entity);
     
     const modelAST = model.getModel();
     const modules = modelAST.abstractElements.filter(isModule);
@@ -46,9 +63,44 @@ describe('Integration: Utilities', () => {
     });
     
     const mod = model.addModule({ name: 'Core' });
-    const modModel = new ModuleModel(mod);
-    modModel.addEntity({ name: 'Entity1' });
-    modModel.addEntity({ name: 'Entity2' });
+    
+    const entity1: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod,
+      name: 'Entity1',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod.elements.push(entity1);
+
+    const entity2: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod,
+      name: 'Entity2',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod.elements.push(entity2);
     
     const modelAST = model.getModel();
     const allModules = modelAST.abstractElements.filter(isModule);

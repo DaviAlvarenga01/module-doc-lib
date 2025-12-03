@@ -8,8 +8,8 @@ import { describe, it, expect } from 'vitest';
 import { ModelController } from '../../src/controllers/ModelController';
 import { ValidationController } from '../../src/controllers/ValidationController';
 import { TransformController, NamingConvention } from '../../src/controllers/TransformController';
-import { ModuleModel } from '../../src/models/ModuleModel';
-import { EntityModel } from '../../src/models/EntityModel';
+import { addEntityToModule } from '../helpers/ast-builders';
+import type { DATATYPE } from '../../src/types';
 
 describe('E2E: Complete Normalization Workflow', () => {
   
@@ -21,18 +21,41 @@ describe('E2E: Complete Normalization Workflow', () => {
     });
     
     const mod = model.addModule({ name: 'user_management' });
-    const modModel = new ModuleModel(mod);
-    const entity = modModel.addEntity({ name: 'user_account' });
-    
-    const entityModel = new EntityModel(entity);
-    entityModel.addAttribute({
-      name: 'FirstName',
-      type: 'STRING' as any
-    });
-    
-    entityModel.addAttribute({
-      name: 'last_name',
-      type: 'STRING' as any
+    addEntityToModule(mod, 'user_account', {
+      attributes: [
+        {
+          $type: 'Attribute',
+          $container: null as any,
+          name: 'FirstName',
+          type: 'string' as DATATYPE,
+          unique: false,
+          blank: false,
+          metadata: {
+            description: '',
+            tags: [],
+            requirements: [],
+            author: 'Test',
+            createdAt: new Date(),
+            modifiedAt: new Date()
+          }
+        },
+        {
+          $type: 'Attribute',
+          $container: null as any,
+          name: 'last_name',
+          type: 'string' as DATATYPE,
+          unique: false,
+          blank: false,
+          metadata: {
+            description: '',
+            tags: [],
+            requirements: [],
+            author: 'Test',
+            createdAt: new Date(),
+            modifiedAt: new Date()
+          }
+        }
+      ]
     });
     
     // 2. Validar antes das transformações
@@ -92,10 +115,24 @@ describe('E2E: Complete Normalization Workflow', () => {
     });
     
     const mod = model.addModule({ name: 'test_module' });
-    const modModel = new ModuleModel(mod);
-    const entity = modModel.addEntity({ name: 'test_entity' });
-    const entityModel = new EntityModel(entity);
-    entityModel.addAttribute({ name: 'TestAttr', type: 'STRING' as any });
+    addEntityToModule(mod, 'test_entity', {
+      attributes: [{
+        $type: 'Attribute',
+        $container: null as any,
+        name: 'TestAttr',
+        type: 'string' as DATATYPE,
+        unique: false,
+        blank: false,
+        metadata: {
+          description: '',
+          tags: [],
+          requirements: [],
+          author: 'Test',
+          createdAt: new Date(),
+          modifiedAt: new Date()
+        }
+      }]
+    });
     
     // Validar inicial
     const valid1 = ValidationController.isValid(model.getModel());

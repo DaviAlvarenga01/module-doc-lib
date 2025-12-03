@@ -8,8 +8,7 @@ import { describe, it, expect } from 'vitest';
 import { ModelController } from '../../src/controllers/ModelController';
 import { ValidationController } from '../../src/controllers/ValidationController';
 import { TransformController, NamingConvention } from '../../src/controllers/TransformController';
-import { ModuleModel } from '../../src/models/ModuleModel';
-import { DATATYPE } from '../../src/types';
+import type { LocalEntity } from '../../src/types';
 
 describe('Integration: Model + Controller + Validation', () => {
   
@@ -64,8 +63,25 @@ describe('Integration: Model + Controller + Validation', () => {
     });
     
     const mod = model.addModule({ name: 'Core' });
-    const modModel = new ModuleModel(mod);
-    modModel.addEntity({ name: 'User' });
+    
+    const entity: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod,
+      name: 'User',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod.elements.push(entity);
     
     // Adicionar timestamps
     const result = TransformController.addTimestamps(model, true, true);
@@ -86,11 +102,63 @@ describe('Integration: Model + Controller + Validation', () => {
     const mod1 = model.addModule({ name: 'Module1' });
     const mod2 = model.addModule({ name: 'Module2' });
     
-    const mod1Model = new ModuleModel(mod1);
-    mod1Model.addEntity({ name: 'Entity1' });
-    mod1Model.addEntity({ name: 'Entity2' });
-    const mod2Model = new ModuleModel(mod2);
-    mod2Model.addEntity({ name: 'Entity3' });
+    // Adicionar entidades diretamente ao Module AST
+    const entity1: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod1,
+      name: 'Entity1',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod1.elements.push(entity1);
+
+    const entity2: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod1,
+      name: 'Entity2',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod1.elements.push(entity2);
+
+    const entity3: LocalEntity = {
+      $type: 'LocalEntity',
+      $container: mod2,
+      name: 'Entity3',
+      attributes: [],
+      relations: [],
+      functions: [],
+      is_abstract: false,
+      metadata: {
+        description: '',
+        tags: [],
+        requirements: [],
+        author: 'Test',
+        createdAt: new Date(),
+        modifiedAt: new Date()
+      }
+    };
+    mod2.elements.push(entity3);
     
     const stats = ModelController.getStatistics(model);
     

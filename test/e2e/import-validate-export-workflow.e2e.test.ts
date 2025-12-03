@@ -7,9 +7,8 @@
 import { describe, it, expect } from 'vitest';
 import { ModelController } from '../../src/controllers/ModelController';
 import { ValidationController } from '../../src/controllers/ValidationController';
-import { ModuleModel } from '../../src/models/ModuleModel';
-import { EntityModel } from '../../src/models/EntityModel';
-import type { Model } from '../../src/types';
+import { addEntityToModule } from '../helpers/ast-builders';
+import type { Model, DATATYPE } from '../../src/types';
 
 describe('E2E: Import → Validate → Export', () => {
   
@@ -27,17 +26,24 @@ describe('E2E: Import → Validate → Export', () => {
       description: 'Core module'
     });
     
-    const modModel = new ModuleModel(mod);
-    const entity = modModel.addEntity({
-      name: 'User',
-      description: 'User entity'
-    });
-    
-    const entityModel = new EntityModel(entity);
-    entityModel.addAttribute({
-      name: 'username',
-      type: 'STRING' as any,
-      description: 'Username'
+    addEntityToModule(mod, 'User', {
+      description: 'User entity',
+      attributes: [{
+        $type: 'Attribute',
+        $container: null as any,
+        name: 'username',
+        type: 'string' as DATATYPE,
+        unique: false,
+        blank: false,
+        metadata: {
+          description: 'Username',
+          tags: [],
+          requirements: [],
+          author: 'Test',
+          createdAt: new Date(),
+          modifiedAt: new Date()
+        }
+      }]
     });
     
     // 2. Exportar para JSON
