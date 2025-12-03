@@ -1,0 +1,222 @@
+{
+  "name": "SimpleEcommerce",
+  "version": "1.0.0",
+  "configuration": {
+    "generateGetters": true,
+    "generateSetters": true,
+    "generateConstructors": true,
+    "generateToString": true,
+    "generateEquals": true,
+    "generateHashCode": true
+  },
+  "modules": [
+    {
+      "name": "Catalog",
+      "entities": [
+        {
+          "name": "Product",
+          "attributes": [
+            {
+              "name": "id",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "description",
+              "type": "string",
+              "required": false
+            },
+            {
+              "name": "price",
+              "type": "decimal",
+              "required": true
+            },
+            {
+              "name": "stock",
+              "type": "int",
+              "required": true,
+              "defaultValue": "0"
+            }
+          ],
+          "relations": [],
+          "functions": [
+            {
+              "name": "updateStock",
+              "parameters": [
+                {
+                  "name": "quantity",
+                  "type": "int"
+                }
+              ],
+              "returnType": "void"
+            }
+          ]
+        },
+        {
+          "name": "Category",
+          "attributes": [
+            {
+              "name": "id",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "relations": [
+            {
+              "name": "products",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "#/modules/Catalog/entities/Product"
+              },
+              "multiplicity": "ONE_TO_MANY"
+            }
+          ],
+          "functions": []
+        }
+      ],
+      "enums": [],
+      "subModules": []
+    },
+    {
+      "name": "Sales",
+      "entities": [
+        {
+          "name": "Customer",
+          "attributes": [
+            {
+              "name": "id",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "email",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "phone",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "relations": [],
+          "functions": []
+        },
+        {
+          "name": "Order",
+          "attributes": [
+            {
+              "name": "id",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "orderDate",
+              "type": "date",
+              "required": true
+            },
+            {
+              "name": "total",
+              "type": "decimal",
+              "required": true
+            }
+          ],
+          "relations": [
+            {
+              "name": "customer",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "#/modules/Sales/entities/Customer"
+              },
+              "multiplicity": "MANY_TO_ONE"
+            },
+            {
+              "name": "items",
+              "type": "COMPOSITION",
+              "entity": {
+                "$ref": "#/modules/Sales/entities/OrderItem"
+              },
+              "multiplicity": "ONE_TO_MANY"
+            }
+          ],
+          "functions": [
+            {
+              "name": "calculateTotal",
+              "parameters": [],
+              "returnType": "decimal"
+            }
+          ]
+        },
+        {
+          "name": "OrderItem",
+          "attributes": [
+            {
+              "name": "quantity",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "unitPrice",
+              "type": "decimal",
+              "required": true
+            }
+          ],
+          "relations": [
+            {
+              "name": "product",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "#/modules/Catalog/entities/Product"
+              },
+              "multiplicity": "MANY_TO_ONE"
+            }
+          ],
+          "functions": []
+        }
+      ],
+      "enums": [
+        {
+          "name": "OrderStatus",
+          "values": [
+            {
+              "name": "PENDING",
+              "value": "PENDING"
+            },
+            {
+              "name": "CONFIRMED",
+              "value": "CONFIRMED"
+            },
+            {
+              "name": "SHIPPED",
+              "value": "SHIPPED"
+            },
+            {
+              "name": "DELIVERED",
+              "value": "DELIVERED"
+            },
+            {
+              "name": "CANCELLED",
+              "value": "CANCELLED"
+            }
+          ]
+        }
+      ],
+      "subModules": []
+    }
+  ]
+}

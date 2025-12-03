@@ -1,0 +1,182 @@
+{
+  "name": "InheritanceExample",
+  "version": "1.0.0",
+  "configuration": {
+    "generateGetters": true,
+    "generateSetters": true,
+    "generateConstructors": true,
+    "generateToString": true,
+    "generateEquals": true,
+    "generateHashCode": true
+  },
+  "modules": [
+    {
+      "name": "HR",
+      "entities": [
+        {
+          "name": "Person",
+          "attributes": [
+            {
+              "name": "id",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "birthDate",
+              "type": "date",
+              "required": true
+            },
+            {
+              "name": "email",
+              "type": "string",
+              "required": false
+            }
+          ],
+          "relations": [],
+          "functions": [
+            {
+              "name": "getAge",
+              "parameters": [],
+              "returnType": "int"
+            }
+          ]
+        },
+        {
+          "name": "Employee",
+          "superType": {
+            "$ref": "#/modules/HR/entities/Person"
+          },
+          "attributes": [
+            {
+              "name": "employeeId",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "position",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "salary",
+              "type": "decimal",
+              "required": true
+            },
+            {
+              "name": "hireDate",
+              "type": "date",
+              "required": true
+            }
+          ],
+          "relations": [
+            {
+              "name": "department",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "#/modules/HR/entities/Department"
+              },
+              "multiplicity": "MANY_TO_ONE"
+            }
+          ],
+          "functions": [
+            {
+              "name": "calculateBonus",
+              "parameters": [
+                {
+                  "name": "percentage",
+                  "type": "decimal"
+                }
+              ],
+              "returnType": "decimal"
+            }
+          ]
+        },
+        {
+          "name": "Manager",
+          "superType": {
+            "$ref": "#/modules/HR/entities/Employee"
+          },
+          "attributes": [
+            {
+              "name": "managementLevel",
+              "type": "int",
+              "required": true
+            }
+          ],
+          "relations": [
+            {
+              "name": "subordinates",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "#/modules/HR/entities/Employee"
+              },
+              "multiplicity": "ONE_TO_MANY"
+            }
+          ],
+          "functions": []
+        },
+        {
+          "name": "Department",
+          "attributes": [
+            {
+              "name": "id",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "name",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "budget",
+              "type": "decimal",
+              "required": false
+            }
+          ],
+          "relations": [
+            {
+              "name": "employees",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "#/modules/HR/entities/Employee"
+              },
+              "multiplicity": "ONE_TO_MANY",
+              "opposite": "department"
+            }
+          ],
+          "functions": []
+        }
+      ],
+      "enums": [
+        {
+          "name": "EmploymentType",
+          "values": [
+            {
+              "name": "FULL_TIME",
+              "value": "FULL_TIME"
+            },
+            {
+              "name": "PART_TIME",
+              "value": "PART_TIME"
+            },
+            {
+              "name": "CONTRACT",
+              "value": "CONTRACT"
+            },
+            {
+              "name": "INTERN",
+              "value": "INTERN"
+            }
+          ]
+        }
+      ],
+      "subModules": []
+    }
+  ]
+}

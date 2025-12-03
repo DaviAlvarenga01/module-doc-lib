@@ -1,0 +1,95 @@
+{
+  "name": "InvalidModel",
+  "version": "1.0.0",
+  "configuration": {
+    "generateGetters": true,
+    "generateSetters": true,
+    "generateConstructors": true,
+    "generateToString": true,
+    "generateEquals": true,
+    "generateHashCode": true
+  },
+  "modules": [
+    {
+      "name": "BadModule",
+      "entities": [
+        {
+          "name": "Entity1",
+          "attributes": [
+            {
+              "name": "id",
+              "type": "int",
+              "required": true
+            },
+            {
+              "name": "id",
+              "type": "string",
+              "required": true
+            }
+          ],
+          "relations": [
+            {
+              "name": "relation1",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "#/modules/NonExistent/entities/Ghost"
+              },
+              "multiplicity": "ONE_TO_ONE"
+            }
+          ],
+          "functions": []
+        },
+        {
+          "name": "Entity1",
+          "attributes": [],
+          "relations": [],
+          "functions": []
+        },
+        {
+          "name": "CyclicEntity",
+          "superType": {
+            "$ref": "#/modules/BadModule/entities/CyclicEntity"
+          },
+          "attributes": [],
+          "relations": [],
+          "functions": []
+        },
+        {
+          "name": "EntityWithInvalidRef",
+          "attributes": [],
+          "relations": [
+            {
+              "name": "badRelation",
+              "type": "ASSOCIATION",
+              "entity": {
+                "$ref": "this-is-not-a-valid-reference"
+              },
+              "multiplicity": "MANY_TO_ONE"
+            }
+          ],
+          "functions": []
+        }
+      ],
+      "enums": [
+        {
+          "name": "EmptyEnum",
+          "values": []
+        },
+        {
+          "name": "DuplicateEnum",
+          "values": [
+            {
+              "name": "VALUE1",
+              "value": "VALUE1"
+            },
+            {
+              "name": "VALUE1",
+              "value": "VALUE1"
+            }
+          ]
+        }
+      ],
+      "subModules": []
+    }
+  ]
+}

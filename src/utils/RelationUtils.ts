@@ -176,6 +176,10 @@ function revertCard(card: RelationTypeString): RelationTypeString {
  * ```
  */
 function getRef(obj: any): any {
+    // Se tem propriedade 'entity', assume ser Relation { entity: Reference<Entity> }
+    if (obj && typeof obj === 'object' && 'entity' in obj) {
+        return obj.entity.$ref;
+    }
     // Se tem propriedade 'type', assume ser { type: Reference<T> }
     if (obj && typeof obj === 'object' && 'type' in obj) {
         return obj.type.$ref;
