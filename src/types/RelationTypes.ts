@@ -15,9 +15,6 @@
  * 4. Define ManyToOne para relacionamentos de associação
  * 5. Estabelece ManyToMany para relacionamentos de múltipla correspondência
  * 
- * Conformidade:
- * - ISO/IEC 25010: Funcionalidade e Integridade de Dados
- * - ISO/IEC 29151: Proteção de dados em relacionamentos
  * 
  * @module types/RelationTypes
  * @author module-doc-lib
@@ -41,8 +38,6 @@ import { Entity, LocalEntity } from './EntityTypes.js';
  * - Facilita processamento genérico de relações
  * - Suporta padrão Strategy para tratamento diferenciado
  * 
- * Conformidade ISO/IEC 25010:
- * - Flexibilidade: Suporte a diversos tipos de relacionamento
  */
 export type Relation = OneToOne | OneToMany | ManyToOne | ManyToMany;
 
@@ -59,9 +54,6 @@ export type Relation = OneToOne | OneToMany | ManyToOne | ManyToMany;
  * - Armazena nome do relacionamento (papel na relação)
  * - Mantém referência à entidade relacionada
  * - Vincula ao container (entidade dona)
- * 
- * Conformidade ISO/IEC 25010:
- * - Manutenibilidade: Estrutura consistente para todas as relações
  * 
  * @extends AstNode
  */
@@ -109,12 +101,6 @@ export interface BaseRelation extends AstNode {
  * - Exclusividade: Cada instância se relaciona com no máximo uma outra
  * - Integridade: Manter consistência em ambos os lados
  * 
- * Conformidade ISO/IEC 25010:
- * - Confiabilidade: Garantia de unicidade do relacionamento
- * - Integridade: Consistência referencial
- * 
- * Conformidade ISO/IEC 29151:
- * - Minimização: Relacionamento direto sem redundância
  * 
  * @extends BaseRelation
  * 
@@ -168,9 +154,6 @@ export interface OneToOne extends BaseRelation {
  * - Coleção: Lado "um" contém lista do lado "muitos"
  * - Cascata: Operações podem propagar para elementos filhos
  * 
- * Conformidade ISO/IEC 25010:
- * - Funcionalidade: Modelagem de composição e agregação
- * - Confiabilidade: Integridade referencial em coleções
  * 
  * @extends BaseRelation
  * 

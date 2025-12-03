@@ -116,12 +116,6 @@ export interface Model extends AstNode {
  * - Framework frontend (frontendFramework)
  * - Configurações de banco de dados
  * 
- * Conformidade ISO/IEC 25010:
- * - Portabilidade: Configuração para múltiplas plataformas
- * - Adaptabilidade: Flexibilidade de configuração
- * 
- * Conformidade ISO/IEC 12207:
- * - Configuração: Gestão de parâmetros de sistema
  * 
  * @example
  * ```typescript

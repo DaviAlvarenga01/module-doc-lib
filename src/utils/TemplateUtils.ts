@@ -65,10 +65,6 @@ import * as os from 'os';
  * - Multiplataforma (respeita EOL do SO)
  * - Type-safe com TypeScript
  * 
- * Conformidade ISO/IEC 25010:
- * - Manutenibilidade: Código gerado legível
- * - Portabilidade: EOL específico da plataforma
- * - Usabilidade: Template natural no código fonte
  * 
  * @param strings - Array de strings literais do template
  * @param values - Array de valores interpolados

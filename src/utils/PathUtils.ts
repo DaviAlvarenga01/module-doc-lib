@@ -161,8 +161,6 @@ export function ensureDirectory(dirPath: string): boolean {
  * - Exibição de caminhos para usuário
  * - Resolução de caminhos relativos
  * 
- * Conformidade ISO/IEC 25010:
- * - Portabilidade: Normalização multiplataforma
  * 
  * @param targetPath - Caminho a ser normalizado
  * @returns Caminho normalizado

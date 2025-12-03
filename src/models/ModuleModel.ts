@@ -19,10 +19,6 @@
  * 7. Busca elementos por nome/tipo
  * 8. Serializa/desserializa para JSON
  * 
- * Conformidade:
- * - ISO/IEC 25010: Modularidade, Reusabilidade
- * - ISO/IEC 12207: Processo de design arquitetural
- * - ISO 9001: Rastreabilidade de componentes
  * 
  * @module models/ModuleModel
  * @author module-doc-lib

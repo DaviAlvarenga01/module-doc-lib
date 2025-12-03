@@ -16,9 +16,6 @@
  * 4. Construção de mapa de relações para cada entidade
  * 5. Resolução de referências entre entidades
  * 
- * Conformidade:
- * - ISO/IEC 25010: Confiabilidade através de integridade referencial
- * - KISS Methodology: Lógica clara de inversão de relações
  * 
  * @module utils/RelationUtils
  * @author module-doc-lib

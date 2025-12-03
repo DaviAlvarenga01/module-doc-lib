@@ -161,11 +161,6 @@ export interface LocalEntity extends AstNode {
  * 4. Estabelece limites de valor (max, min)
  * 5. Permite valor padrão (default_value)
  * 
- * Conformidade ISO/IEC 25010:
- * - Confiabilidade: Validações garantem integridade dos dados
- * 
- * Conformidade ISO/IEC 29151:
- * - Minimização de dados: Restrições controlam coleta de informações
  * 
  * @extends AstNode
  */

@@ -15,9 +15,6 @@
  * 3. Normalização de identificadores
  * 4. Remoção de caracteres especiais
  * 
- * Conformidade:
- * - ISO/IEC 25010: Usabilidade através de nomenclatura consistente
- * - KISS Methodology: Funções simples e diretas
  * 
  * @module utils/StringUtils
  * @author module-doc-lib
@@ -45,9 +42,6 @@
  * - Formatação de tipos: "pedido" → "Pedido"
  * - Normalização de identificadores em PascalCase
  * 
- * Conformidade ISO/IEC 25010:
- * - Usabilidade: Nomenclatura consistente facilita leitura
- * - Manutenibilidade: Padrão de nomenclatura uniforme
  * 
  * @param str - String a ser capitalizada
  * @returns String com primeiro caractere em maiúscula
@@ -89,8 +83,6 @@ export function capitalizeString(str: string): string {
  * - Formatação de atributos: "NomeProduto" → "nomeProduto"
  * - Normalização de identificadores em camelCase
  * 
- * Conformidade ISO/IEC 25010:
- * - Usabilidade: Convenções de nomenclatura consistentes
  * 
  * @param str - String a ser descapitalizada
  * @returns String com primeiro caractere em minúscula

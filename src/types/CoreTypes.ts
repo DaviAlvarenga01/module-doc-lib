@@ -40,9 +40,6 @@
  * - Tipos temporais: date, datetime, time
  * - Tipos especiais: blob (dados binários)
  * 
- * Conformidade ISO/IEC 25010:
- * - Portabilidade: Tipos abstratos mapeáveis para diferentes linguagens
- * - Interoperabilidade: Definições consistentes entre sistemas
  */
 export enum DATATYPE {
     /**

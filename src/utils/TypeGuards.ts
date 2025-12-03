@@ -59,10 +59,6 @@ import type {
  * - Processamento de elementos polimórficos
  * - Validação de estrutura antes de operações
  * 
- * Conformidade ISO/IEC 25010:
- * - Confiabilidade: Previne acesso a propriedades inexistentes
- * - Robustez: Tratamento seguro de tipos
- * 
  * @param item - Objeto a ser verificado
  * @returns true se item é Model, false caso contrário
  * 
