@@ -15,10 +15,6 @@
  * 3. Habilita acesso seguro a propriedades específicas do tipo
  * 4. Facilita pattern matching e discriminação de tipos
  * 
- * Conformidade:
- * - ISO/IEC 25010: Confiabilidade através de type-safety
- * - KISS Methodology: Verificações simples baseadas em $type
- * 
  * @module utils/TypeGuards
  * @author module-doc-lib
  * @version 1.0.0

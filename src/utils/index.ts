@@ -18,9 +18,6 @@
  * 7. Re-exporta todos os utilitários de TemplateUtils
  * 8. Fornece interface unificada de importação
  * 
- * Conformidade:
- * - ISO/IEC 25010: Usabilidade através de interface clara
- * - ISO/IEC 12207: Documentação de interface de componente
  * 
  * @module utils
  * @author module-doc-lib
@@ -116,7 +113,7 @@ export {
     findOwnedRelations,
     findRelationByTarget,
     hasCircularRelation,
-    type RelationType,
+    type RelationTypeString,
     type RelationInfo
 } from './RelationUtils.js';
 

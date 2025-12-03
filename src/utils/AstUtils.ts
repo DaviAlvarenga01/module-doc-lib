@@ -65,13 +65,6 @@ import { isModel, isModule, isLocalEntity } from './TypeGuards.js';
  * - Namespaces C#: Empresa.Vendas.Cliente
  * - Referências únicas em documentação
  * 
- * Conformidade ISO/IEC 25010:
- * - Identificabilidade: Nome único para cada entidade
- * - Rastreabilidade: Caminho completo desde a raiz
- * 
- * Conformidade ISO/IEC 12207:
- * - Nomenclatura: Identificação hierárquica de componentes
- * 
  * @param entity - Entidade para obter nome qualificado
  * @returns Nome qualificado no formato "Module.SubModule.Entity"
  * 
@@ -260,8 +253,6 @@ export function findContainerOfType<T extends AstNode>(
  * - Estatísticas e análise do modelo
  * - Geração de índices e documentação
  * 
- * Conformidade ISO/IEC 25010:
- * - Completude: Acesso a todos os elementos do modelo
  * 
  * @param model - Modelo raiz
  * @returns Array com todas as entidades locais
@@ -399,8 +390,6 @@ export function findEntityByName(
  * - Resolução de tipos de atributos (EnumX)
  * - Validação de integridade referencial
  * 
- * Conformidade ISO/IEC 25010:
- * - Integridade: Resolução de referências válidas
  * 
  * @param reference - Referência a ser resolvida
  * @param model - Modelo onde buscar

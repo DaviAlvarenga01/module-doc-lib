@@ -34,17 +34,18 @@ import type {
 import { isLocalEntity, isOneToMany } from './TypeGuards.js';
 
 /**
- * RelationType
+ * RelationTypeString
  * 
- * Título: Tipo de Relacionamento (String Literal)
+ * Título: String Literal de Tipo de Relacionamento
  * 
  * Descrição:
  * Tipo união das string literals que representam os tipos de relacionamento.
  * Usado para type-safety em operações de inversão de cardinalidade.
+ * Renomeado de RelationType para evitar conflito com enum RelationType da camada Types.
  * 
  * @type
  */
-export type RelationType = 'OneToMany' | 'OneToOne' | 'ManyToOne' | 'ManyToMany';
+export type RelationTypeString = 'OneToMany' | 'OneToOne' | 'ManyToOne' | 'ManyToMany';
 
 /**
  * RelationInfo
@@ -76,7 +77,7 @@ export interface RelationInfo {
     /**
      * Cardinalidade do relacionamento
      */
-    card: RelationType;
+    card: RelationTypeString;
     
     /**
      * Se true, esta entidade é dona da relação
@@ -128,7 +129,7 @@ export interface RelationInfo {
  * revertCard('ManyToMany')  // 'ManyToMany'
  * ```
  */
-function revertCard(card: RelationType): RelationType {
+function revertCard(card: RelationTypeString): RelationTypeString {
     switch (card) {
         case 'OneToOne':
             return 'OneToOne';
@@ -272,7 +273,7 @@ export function processRelations(
     const add_relation = (
         owner: LocalEntity,
         nonOwner: LocalEntity,
-        cardName: RelationType
+        cardName: RelationTypeString
     ) => {
         // Adiciona relação no owner (com owner: true)
         map.get(owner)?.push({
@@ -302,7 +303,7 @@ export function processRelations(
                     add_relation(relationType, entity, 'ManyToOne');
                 } else {
                     // Outros casos: entidade que declara é owner
-                    add_relation(entity, relationType, relationship.$type as RelationType);
+                    add_relation(entity, relationType, relationship.$type as RelationTypeString);
                 }
             }
         }

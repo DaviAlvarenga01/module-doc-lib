@@ -95,10 +95,6 @@ export interface Node {
  * - adjacencyList: Map<vértice, {descrição, dependências, atores}>
  * - dependências: Array de vértices para os quais este vértice aponta
  * 
- * Conformidade ISO/IEC 25010:
- * - Confiabilidade: Valida ausência de ciclos
- * - Manutenibilidade: Determina ordem de processamento
- * 
  * @class
  */
 export class Graph {
@@ -185,8 +181,6 @@ export class Graph {
      * - Registrar dependência entre casos de uso
      * - Construir grafo de dependências
      * 
-     * Conformidade ISO/IEC 25010:
-     * - Confiabilidade: Valida existência de vértices
      * 
      * @param source - Vértice origem (dependente)
      * @param target - Vértice destino (dependência)
@@ -238,9 +232,6 @@ export class Graph {
      * - Ordem de processamento de módulos
      * - Resolver dependências de importação
      * 
-     * Conformidade ISO/IEC 25010:
-     * - Confiabilidade: Detecta ciclos impossíveis de ordenar
-     * - Eficiência: Algoritmo linear em V+E
      * 
      * @returns Array com vértices ordenados topologicamente, ou null se houver ciclo
      * 
