@@ -20,12 +20,6 @@
  * 7. Verifica conformidade com padrões ISO
  * 8. Gera representações textuais do modelo
  * 
- * Conformidade:
- * - ISO/IEC 25010: Funcionalidade, Usabilidade, Manutenibilidade
- * - ISO/IEC 12207: Processo de definição de requisitos
- * - ISO 9001: Rastreabilidade de elementos do modelo
- * - ISO/IEC 29151: Controle de dados pessoais identificados como atributos sensíveis
- * 
  * @module models/DomainModel
  * @author module-doc-lib
  * @version 1.0.0
@@ -84,7 +78,7 @@ import {
  */
 export interface DomainModelOptions {
     /** Nome identificador do modelo */
-    name: string;
+    name?: string;
     /** Versão do modelo (ex: "1.0.0") */
     version?: string;
     /** Autor do modelo */
@@ -93,6 +87,8 @@ export interface DomainModelOptions {
     description?: string;
     /** Configuração da aplicação (linguagens, banco de dados, etc) */
     configuration?: Partial<Configuration>;
+    /** Model existente para encapsular (alternativa aos outros parâmetros) */
+    model?: Model;
 }
 
 /**
@@ -142,9 +138,7 @@ export interface ModelStatistics {
  * 
  * Descrição:
  * Representa o modelo de domínio completo da aplicação. Encapsula o tipo
- * Model e adiciona comportamentos para manipulação e validação. Segue
- * princípio KISS mantendo métodos simples e diretos.
- * 
+ * Model e adiciona comportamentos para manipulação e validação.
  * Processos:
  * 1. Construtor inicializa estrutura Model vazia
  * 2. Métodos add/remove gerenciam módulos e elementos abstratos
@@ -197,7 +191,13 @@ export class DomainModel {
      * ```
      */
     constructor(options: DomainModelOptions) {
-        const now = new Date().toISOString();
+        // Se um Model já existente foi fornecido, apenas encapsula
+        if (options.model) {
+            this.model = options.model;
+            return;
+        }
+
+        const now = new Date();
         
         // Cria metadados
         const metadata: Metadata = {
@@ -206,12 +206,12 @@ export class DomainModel {
             requirements: [],
             author: options.author || 'Unknown',
             createdAt: now,
-            updatedAt: now
+            modifiedAt: now
         };
 
         // Cria configuração padrão
         const configuration: Configuration = {
-            name: options.name,
+            name: options.name || 'Unnamed',
             version: options.version || '1.0.0',
             backendLanguage: options.configuration?.backendLanguage || 'Java',
             frontendFramework: options.configuration?.frontendFramework || 'Vue',
@@ -222,7 +222,7 @@ export class DomainModel {
                 version: '15',
                 host: 'localhost',
                 port: 5432,
-                database: options.name.toLowerCase()
+                database: (options.name || 'unnamed').toLowerCase()
             }
         };
 
@@ -230,7 +230,6 @@ export class DomainModel {
         this.model = {
             $type: 'Model',
             $container: undefined,
-            modules: [],
             abstractElements: [],
             configuration,
             metadata
@@ -275,12 +274,14 @@ export class DomainModel {
         }
 
         // Verifica duplicação
-        const existing = this.model.modules.find(m => m.name === options.name);
+        const existing = this.model.abstractElements.find((m): m is Module => 
+            isModule(m) && m.name === options.name
+        );
         if (existing) {
             throw new Error(`Módulo '${options.name}' já existe no modelo`);
         }
 
-        const now = new Date().toISOString();
+        const now = new Date();
 
         // Cria módulo
         const module: Module = {
@@ -292,15 +293,17 @@ export class DomainModel {
                 description: options.description || '',
                 tags: options.tags || [],
                 requirements: [],
-                author: this.model.metadata.author,
+                author: this.model.metadata?.author || 'Unknown',
                 createdAt: now,
-                updatedAt: now
+                modifiedAt: now
             }
         };
 
         // Adiciona ao modelo
-        this.model.modules.push(module);
-        this.model.metadata.updatedAt = now;
+        this.model.abstractElements.push(module);
+        if (this.model.metadata) {
+            this.model.metadata.modifiedAt = now;
+        }
 
         return module;
     }
@@ -329,7 +332,9 @@ export class DomainModel {
      * ```
      */
     public removeModule(moduleName: string): boolean {
-        const index = this.model.modules.findIndex(m => m.name === moduleName);
+        const index = this.model.abstractElements.findIndex((m): m is Module => 
+            isModule(m) && m.name === moduleName
+        );
         
         if (index === -1) {
             throw new Error(`Módulo '${moduleName}' não encontrado no modelo`);
@@ -337,8 +342,10 @@ export class DomainModel {
 
         // TODO: Verificar dependências (implementar quando tiver análise de referências)
         
-        this.model.modules.splice(index, 1);
-        this.model.metadata.updatedAt = new Date().toISOString();
+        this.model.abstractElements.splice(index, 1);
+        if (this.model.metadata) {
+            this.model.metadata.modifiedAt = new Date();
+        }
 
         return true;
     }
@@ -381,9 +388,12 @@ export class DomainModel {
             throw new Error('Elemento abstrato deve ser LocalEntity ou EnumX');
         }
 
-        element.$container = this.model;
+        // Usa type assertion para contornar readonly
+        (element as any).$container = this.model;
         this.model.abstractElements.push(element);
-        this.model.metadata.updatedAt = new Date().toISOString();
+        if (this.model.metadata) {
+            this.model.metadata.modifiedAt = new Date();
+        }
     }
 
     /**
@@ -404,7 +414,9 @@ export class DomainModel {
      * ```
      */
     public getModule(name: string): Module | undefined {
-        return this.model.modules.find(m => m.name === name);
+        return this.model.abstractElements.find((m): m is Module => 
+            isModule(m) && m.name === name
+        );
     }
 
     /**
@@ -504,7 +516,7 @@ export class DomainModel {
         }
 
         // Valida módulos vazios
-        this.model.modules.forEach(module => {
+        this.model.abstractElements.filter(isModule).forEach((module: Module) => {
             if (module.elements.length === 0) {
                 errors.push({
                     severity: 'warning',
@@ -699,9 +711,12 @@ export class DomainModel {
      */
     public toString(): string {
         const stats = this.getStatistics();
+        const config = this.model.configuration;
+        const metadata = this.model.metadata;
+        
         return [
-            `Model: ${this.model.configuration.name} v${this.model.configuration.version}`,
-            `  Author: ${this.model.metadata.author}`,
+            `Model: ${config?.name || 'Unnamed'} v${config?.version || '0.0.0'}`,
+            `  Author: ${metadata?.author || 'Unknown'}`,
             `  Modules: ${stats.moduleCount}`,
             `  Entities: ${stats.entityCount}`,
             `  Enums: ${stats.enumCount}`,
