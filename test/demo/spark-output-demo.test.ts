@@ -111,6 +111,7 @@ describe('DEMO: Spark Output Generation', () => {
             createdAt: new Date(),
             modifiedAt: new Date()
           }
+
         },
         {
           $type: 'Attribute',
