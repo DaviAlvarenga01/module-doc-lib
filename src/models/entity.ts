@@ -1,6 +1,5 @@
-import { EnumEntityAtribute, Module, ModuleImport, Parameter } from "./model.js";
-import { Attribute, DATATYPE } from "./atribute.js";
-import { Entity, Reference, Relation } from "./actor.js";
+import { EnumEntityAtribute, Module, ModuleImport, Parameter, DATATYPE, Entity, Reference, Relation } from "./model.js";
+import { Attribute } from "./atribute.js";
 
 export interface FunctionEntity {
     $container: LocalEntity;

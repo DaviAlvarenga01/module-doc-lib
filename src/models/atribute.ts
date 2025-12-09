@@ -1,5 +1,4 @@
-import { EnumX, LocalEntity } from "./model.js";
-export type DATATYPE = 'boolean' | 'cnpj' | 'cpf' | 'currency' | 'date' | 'datetime' | 'decimal' | 'email' | 'file' | 'integer' | 'mobilePhoneNumber' | 'phoneNumber' | 'string' | 'uuid' | 'void' | 'zipcode';
+import { EnumX, LocalEntity, DATATYPE } from "./model.js"; 
 export type AbstractElement = EnumX;
 
 export interface Attribute {
