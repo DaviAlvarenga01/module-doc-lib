@@ -9,7 +9,7 @@ export type { FunctionEntity, ImportedEntity } from './models/entity.js';
 export { isFunctionEntity, isImportedEntity, isLocalEntity } from './models/entity.js';
 
 // Export additional attribute types  
-export type { AttributeEnum } from './models/atribute.js';
+export type { Attribute, AttributeEnum } from './models/atribute.js';
 export { isAttribute, isAttributeEnum } from './models/atribute.js';
 
 // Export additional actor functions

@@ -1,85 +1,261 @@
-# 🚀 Workflow de Publicação Automática (Changesets)
+# module-doc-lib
 
-Este projeto utiliza **Changesets** para gerenciar versionamento
-semântico, geração de changelogs e publicação no NPM de forma
-automatizada.
+> Biblioteca TypeScript de modelos de domínio para geração de código
 
-## 🔄 Resumo do Fluxo
+[![NPM Version](https://img.shields.io/npm/v/module-doc-lib)](https://www.npmjs.com/package/module-doc-lib)
+[![License](https://img.shields.io/npm/l/module-doc-lib)](./LICENSE)
 
-Não alteramos mais a versão no `package.json` manualmente. O fluxo segue
-este ciclo:
+## 📖 Sobre
 
-1.  **Desenvolvimento:** Alteração do código.
-2.  **Changeset:** Criação de uma "intenção de mudança" localmente.
-3.  **Pull Request Automático:** O bot cria um PR acumulando as
-    mudanças.
-4.  **Publicação:** O merge desse PR dispara a publicação no NPM.
+`module-doc-lib` é uma biblioteca TypeScript que fornece modelos tipados para representação de estruturas de domínio em projetos de geração de código a principio pensada para ser usada pelos (leds-tools-Spark-lib e leds-tools-Andes). Ela oferece interfaces e tipos para modelar entidades, atributos, relacionamentos, casos de uso e configurações de projetos.
 
-------------------------------------------------------------------------
+## 🚀 Instalação
 
-## 🛠️ Guia para Desenvolvedores
-
-### 1. Codificação
-
-Trabalhe no código normalmente (correções de bugs, novas features, etc).
-
-### 2. Gerar um Changeset
-
-**Antes de commitar**, se a sua alteração impacta a biblioteca e requer
-uma nova versão, rode no terminal:
-
-``` bash
-npx changeset
+```bash
+npm install module-doc-lib
 ```
 
-Um menu interativo aparecerá. Use as setas e a barra de espaço para
-selecionar:
+## 📚 Uso Básico
 
--   **Patch:** Correções de bugs (ex: 1.0.0 -\> 1.0.1).
--   **Minor:** Novas funcionalidades compatíveis (ex: 1.0.0 -\> 1.1.0).
--   **Major:** Mudanças que quebram compatibilidade (ex: 1.0.0 -\>
-    2.0.0).
+```typescript
+import { 
+  Model, 
+  LocalEntity, 
+  Attribute, 
+  isLocalEntity,
+  isAttribute 
+} from 'module-doc-lib';
 
-Escreva um resumo da mudança quando solicitado. Isso gerará um arquivo
-temporário na pasta `.changeset`.
+// Criar um modelo
+const model: Model = {
+  $type: 'Model',
+  name: 'MeuProjeto',
+  configurations: [],
+  modules: [],
+  entities: []
+};
 
-### 3. Commit e Push
-
-Inclua o arquivo gerado pelo changeset no seu commit:
-
-``` bash
-git add .
-git commit -m "feat: minha nova funcionalidade"
-git push origin main
+// Usar type guards
+if (isLocalEntity(entity)) {
+  console.log('É uma entidade local');
+}
 ```
 
-------------------------------------------------------------------------
+## 🏗️ Estrutura de Modelos
 
-## 🤖 O Processo de Release (GitHub Actions)
+### Core Models
 
-### 1. O Pull Request "Version Packages"
+- **`Model`** - Modelo raiz do projeto
+- **`Module`** - Módulo contendo entidades e enums
+- **`Configuration`** - Configurações do projeto (linguagem, database, features)
 
-Quando o GitHub detecta novos arquivos de changeset na branch `main`:
+### Entity Models
 
--   O bot **NÃO publica a versão imediatamente**.
--   Ele abre (ou atualiza) automaticamente um Pull Request chamado
-    **"Version Packages"**.
+- **`LocalEntity`** - Entidade definida no módulo atual
+- **`ImportedEntity`** - Referência a entidade de outro módulo
+- **`FunctionEntity`** - Método/função de uma entidade
 
-Este PR contém:
+### Attribute Models
 
--   A atualização da versão no `package.json`.
--   As atualizações no `CHANGELOG.md`.
--   A remoção dos arquivos temporários `.changeset`.
+- **`Attribute`** - Atributo de entidade com tipo primitivo
+- **`AttributeEnum`** - Atributo enum
+- **`EnumX`** - Definição de enumeração
+- **`EnumEntityAtribute`** - Atributo que referencia um enum
 
-### 2. Publicando a Versão
+### Relationship Models
 
-Vários desenvolvedores podem enviar changesets. O PR "Version Packages"
-irá acumular todas as mudanças.
+- **`OneToOne`** - Relacionamento 1:1
+- **`OneToMany`** - Relacionamento 1:N
+- **`ManyToOne`** - Relacionamento N:1
+- **`ManyToMany`** - Relacionamento N:N
 
-Para efetivar o lançamento:
+### Use Case Models
 
-1.  Acesse o PR **"Version Packages"**.
-2.  Faça o **Merge** dele na `main`.
+- **`UseCase`** - Caso de uso
+- **`UseCasesModel`** - Modelo de casos de uso
+- **`Actor`** - Ator do sistema
+- **`Event`** - Evento do sistema
 
-O GitHub Actions rodará na `main`, publicará o pacote no NPM e criará as
-tags no Git automaticamente.
+## 🔧 Type Guards
+
+A biblioteca fornece type guards para verificação de tipos em runtime:
+
+```typescript
+import { isLocalEntity, isAttribute, isActor } from 'module-doc-lib';
+
+if (isLocalEntity(entity)) {
+  // TypeScript sabe que entity é LocalEntity
+  console.log(entity.attributes);
+}
+
+if (isAttribute(attr)) {
+  // TypeScript sabe que attr é Attribute
+  console.log(attr.type);
+}
+```
+
+## 🎯 Data Types Suportados
+
+```typescript
+type DATATYPE = 
+  | 'boolean' 
+  | 'string' 
+  | 'integer' 
+  | 'decimal' 
+  | 'date' 
+  | 'datetime'
+  | 'email' 
+  | 'cpf' 
+  | 'cnpj' 
+  | 'uuid' 
+  | 'currency'
+  | 'phoneNumber' 
+  | 'mobilePhoneNumber' 
+  | 'zipcode'
+  | 'file' 
+  | 'void';
+```
+
+## 💻 Linguagens Suportadas
+
+```typescript
+type LANGUAGETYPE = 
+  | 'java'
+  | 'python'
+  | 'csharp-minimal-api'
+  | 'csharp-clean-architecture';
+```
+
+## 🔍 Exemplo Completo
+
+```typescript
+import { Model, LocalEntity, Attribute } from 'module-doc-lib';
+
+const userEntity: LocalEntity = {
+  $type: 'LocalEntity',
+  $container: module, // referência ao módulo pai
+  name: 'User',
+  comment: 'Entidade de usuário do sistema',
+  is_abstract: false,
+  attributes: [
+    {
+      $type: 'Attribute',
+      $container: userEntity,
+      name: 'name',
+      type: 'string',
+      comment: 'Nome do usuário'
+    },
+    {
+      $type: 'Attribute',
+      $container: userEntity,
+      name: 'email',
+      type: 'email',
+      comment: 'Email do usuário'
+    }
+  ],
+  enumentityatributes: [],
+  functions: [],
+  relations: []
+};
+```
+
+## 📦 Exports
+
+```typescript
+// Versão da biblioteca
+export const version: string;
+
+// Todos os tipos e interfaces
+export * from './models/model.js';
+
+// Entidades
+export type { FunctionEntity, ImportedEntity } from './models/entity.js';
+export { isFunctionEntity, isImportedEntity, isLocalEntity } from './models/entity.js';
+
+// Atributos
+export type { Attribute, AttributeEnum } from './models/atribute.js';
+export { isAttribute, isAttributeEnum } from './models/atribute.js';
+
+// Atores
+export { isActor } from './models/actor.js';
+```
+
+## 🧪 Testes
+
+A biblioteca possui cobertura completa de testes:
+
+```bash
+npm test          # Roda todos os testes
+npm run test:watch # Modo watch
+```
+
+**116 testes** cobrindo:
+- Type guards (24 testes)
+- Modelos de entidade (12 testes)
+- Modelos de atributo (19 testes)
+- Modelos de relacionamento (14 testes)
+- Modelos de caso de uso (20 testes)
+- Modelos core (20 testes)
+- Utilitário de referência (7 testes)
+
+## 🔄 Desenvolvimento
+
+### Build
+
+```bash
+npm run build     # Build de produção
+npm run dev       # Build em modo watch
+```
+
+### Commits
+
+```bash
+npm run commit    # Commit usando Commitizen
+```
+
+---
+
+## 🚀 Workflow de Publicação (Changesets)
+
+Este projeto utiliza **Changesets** para gerenciar versionamento semântico e publicação automatizada.
+
+### Guia Rápido
+
+1. **Desenvolvimento:** Faça suas alterações no código
+2. **Changeset:** Crie um changeset
+   ```bash
+   npx changeset
+   ```
+   - Selecione o tipo: **patch** (bug fix), **minor** (nova feature) ou **major** (breaking change)
+   - Escreva uma descrição clara da mudança
+3. **Commit:** Commit das alterações + changeset gerado
+   ```bash
+   git add .
+   git commit -m "feat: minha nova funcionalidade"
+   git push origin main
+   ```
+4. **Pull Request "Version Packages":** O bot criará/atualizará automaticamente
+5. **Merge:** Faça merge do PR para publicar no NPM
+
+## 📄 Licença
+
+Este projeto está licenciado sob a licença especificada no arquivo [LICENSE](./LICENSE).
+
+## 🤝 Contribuindo
+
+Contribuições são bem-vindas! Por favor:
+1. Fork o projeto
+2. Crie uma branch para sua feature (`git checkout -b feature/MinhaFeature`)
+3. Commit suas mudanças usando Commitizen (`npm run commit`)
+4. Crie um changeset (`npx changeset`)
+5. Push para a branch (`git push origin feature/MinhaFeature`)
+6. Abra um Pull Request
+
+## 📞 Suporte
+
+Para questões e suporte:
+- Entre em contato com a equipe LEDS
+
+---
+
+**module-doc-lib** v1.17.0 - Desenvolvido pelo time LEDS
